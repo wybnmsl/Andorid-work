@@ -7,7 +7,7 @@
 
     android:layout_height="match_parent"
     android:visibility="visible"
-    tools:context=".DownCountActivity">
+    tools:context=".AddNewActivity">
 
     <TextView
         android:id="@+id/textView_biaoti"

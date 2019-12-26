@@ -52,7 +52,7 @@ public class MainActivity extends AppCompatActivity {
     private List<Time> listTime=new ArrayList<>();
     private TimeAdapter timeAdapter;
     private  Toolbar toolbar;
-    private SaveTime time_saver;
+    private  timeSaver time_saver;
     private String title,ddl,days;
     private int editPosition;
     private long day_left;
@@ -111,7 +111,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent=new Intent();
-                intent.setClass(MainActivity.this, DownCountActivity.class);
+                intent.setClass(MainActivity.this, AddNewActivity.class);
 
                 startActivityForResult(intent,REQUEST_CODE_ADD);
 
@@ -124,7 +124,7 @@ public class MainActivity extends AppCompatActivity {
                                     int position, long id) {
                 editPosition=position;
                 Time item=(Time) timeAdapter.getItem(position);
-                Intent intent = new Intent(MainActivity.this, DetailActivity.class);
+                Intent intent = new Intent(MainActivity.this,ContentActivity.class);
                 Bundle bundle = new Bundle();
                 bundle.putString("title",item.getTitle());
                 bundle.putString("ddl",item.getDdl());
@@ -233,7 +233,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void init(){
-        time_saver=new SaveTime(this);
+        time_saver=new timeSaver(this);
         listTime=time_saver.load();
         if(listTime.size()==0){
           listTime.add(new Time("my first timer","2019年12月31日",R.drawable.imagine_view_cover2));
