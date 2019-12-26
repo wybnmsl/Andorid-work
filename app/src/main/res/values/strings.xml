@@ -3,14 +3,14 @@
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
     <string name="nav_header_title">iTime</string>
-    <string name="nav_header_subtitle">made by wybnmsl</string>
+    <string name="nav_header_subtitle">Made by Wybnmsl</string>
     <string name="nav_header_desc">Navigation header</string>
     <string name="action_settings">Settings</string>
 
-    <string name="menu_timeKeeping">计时</string>
-    <string name="menu_headLine">标签</string>
-    <string name="menu_mainColor">主题色</string>
-    <string name="menu_options">设置</string>
+    <string name="menu_jishi">计时</string>
+    <string name="menu_biaoqian">标签</string>
+    <string name="menu_zhutise">主题色</string>
+    <string name="menu_shezhi">设置</string>
     <string name="menu_share">分享</string>
     <string name="menu_send">发送</string>
     <string name="title_activity_content">ContentActivity</string>

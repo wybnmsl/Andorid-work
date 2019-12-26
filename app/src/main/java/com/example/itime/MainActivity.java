@@ -44,13 +44,16 @@ import java.util.Random;
 public class MainActivity extends AppCompatActivity {
 
     public static final int REQUEST_CODE_ADD = 901;
+    public static final int REQUEST_CODE_EDIT = 902;
     private AppBarConfiguration mAppBarConfiguration;
     private FloatingActionButton fab;
     private ListView listViewTime;
+    private TextView textViewDays,textViewJudge;//显示还剩多少天
     private List<Time> listTime=new ArrayList<>();
     private TimeAdapter timeAdapter;
     private  Toolbar toolbar;
     private SaveTime time_saver;
+    private String title,ddl,days;
     private int editPosition;
     private long day_left;
     private long timeMillis_now,timeMillis_set;
@@ -81,8 +84,11 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
                 switch (menuItem.getItemId()) {
-                    case R.id.nav_timekeeping:
+                    case R.id.nav_jishi:
                         drawer.closeDrawer(GravityCompat.START);
+                        break;
+                    case R.id.nav_zhutise:
+                        Toast.makeText(MainActivity.this,"待补充",Toast.LENGTH_SHORT).show();
                         break;
                 }
                 return false;
@@ -95,7 +101,7 @@ public class MainActivity extends AppCompatActivity {
         init();
 
         listViewTime=(ListView) findViewById(R.id.list_view_main);
-       
+        textViewJudge=findViewById(R.id.textView_judge);
 
         timeAdapter=new TimeAdapter(MainActivity.this,R.layout.list_view_main_time,listTime);
         listViewTime.setAdapter(timeAdapter);
@@ -104,8 +110,11 @@ public class MainActivity extends AppCompatActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //do something
-                Toast.makeText(MainActivity.this, "还没有完成",Toast.LENGTH_SHORT).show();
+                Intent intent=new Intent();
+                intent.setClass(MainActivity.this, DownCountActivity.class);
+
+                startActivityForResult(intent,REQUEST_CODE_ADD);
+
             }
         });
         listViewTime.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -123,6 +132,8 @@ public class MainActivity extends AppCompatActivity {
                 bundle.putInt("position",position);
                 intent.putExtras(bundle);
                 startActivityForResult(intent,0);//进入详情界面
+
+
 
             }
 
@@ -186,6 +197,20 @@ public class MainActivity extends AppCompatActivity {
                     timeAdapter.notifyDataSetChanged();
                     break;
                 }
+            case 0:
+                if(resultCode==3){
+                    String title=data.getStringExtra("title");
+                    String ddl=data.getStringExtra("ddl");
+                    //day=data.getLongExtra("day",0);
+                    Time time =listTime.get(editPosition);
+                    time.setTitle(title);
+                    time.setDdl(ddl);
+
+                    timeAdapter.notifyDataSetChanged();
+                    String str = "修改成功";
+                    Toast.makeText(this, str, Toast.LENGTH_SHORT).show();
+                    break;
+                }
         }
     }
     @Override
@@ -211,7 +236,7 @@ public class MainActivity extends AppCompatActivity {
         time_saver=new SaveTime(this);
         listTime=time_saver.load();
         if(listTime.size()==0){
-          listTime.add(new Time("First Timer","2020年12月31日",R.drawable.imagine_view_cover2));
+          listTime.add(new Time("my first timer","2019年12月31日",R.drawable.imagine_view_cover2));
         }
     }
     //获取系统当前时间

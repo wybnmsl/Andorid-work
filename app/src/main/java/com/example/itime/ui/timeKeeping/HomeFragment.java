@@ -19,7 +19,7 @@ public class HomeFragment extends Fragment {
                              ViewGroup container, Bundle savedInstanceState) {
         homeViewModel =
                 ViewModelProviders.of(this).get(HomeViewModel.class);
-        View root = inflater.inflate(R.layout.fragment_timekeeping, container, false);
+        View root = inflater.inflate(R.layout.fragment_jishi, container, false);
 
 
         return root;

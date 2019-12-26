@@ -16,7 +16,7 @@
         android:id="@+id/item_delete"
         android:checkable="true"
         android:enabled="true"
-        android:icon="@drawable/ic_delete"
+        android:icon="@drawable/icon_delete"
         android:title="删除"
         android:visible="true"
         app:showAsAction="always">
@@ -27,7 +27,7 @@
         android:id="@+id/item_share"
         android:checkable="true"
         android:enabled="true"
-        android:icon="@drawable/ic_share"
+        android:icon="@drawable/icon_share"
         android:title="分享"
         android:visible="true"
         app:showAsAction="always">

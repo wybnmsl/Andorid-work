@@ -5,26 +5,26 @@
 
     <group android:checkableBehavior="single">
         <item
-            android:id="@+id/nav_timekeeping"
+            android:id="@+id/nav_jishi"
             android:icon="@drawable/icon_timekeeping"
-            android:title="@string/menu_timeKeeping" />
+            android:title="@string/menu_jishi" />
         <item
-            android:id="@+id/nav_headline"
+            android:id="@+id/nav_biaoqian"
             android:icon="@drawable/icon_headline"
-            android:title="@string/menu_headLine" />
+            android:title="@string/menu_biaoqian" />
         <item
-            android:id="@+id/nav_maincolor"
+            android:id="@+id/nav_zhutise"
             android:icon="@drawable/icon_maincolor"
-            android:title="@string/menu_mainColor" />
+            android:title="@string/menu_zhutise" />
 
     </group>
 
-    <item android:title="Other function">
+    <item android:title="Other Function">
         <menu>
             <item
-                android:id="@+id/nav_options"
-                android:icon="@drawable/icon_menu_options"
-                android:title="@string/menu_options" />
+                android:id="@+id/nav_shezhi"
+                android:icon="@drawable/icon_menu_manage"
+                android:title="@string/menu_shezhi" />
             <item
                 android:id="@+id/nav_share"
                 android:icon="@drawable/icon_menu_share"

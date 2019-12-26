@@ -32,7 +32,7 @@
                 android:layout_height="522dp"
                 android:fitsSystemWindows="true"
                 android:scaleType="centerCrop"
-                android:src="@drawable/main_background"
+                android:src="@drawable/background"
                 app:layout_collapseMode="parallax" />
             <androidx.appcompat.widget.Toolbar
                 android:id="@+id/toolbar"
