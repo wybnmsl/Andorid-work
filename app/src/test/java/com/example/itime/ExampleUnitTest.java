@@ -1,4 +1,4 @@
-package com.example.paranoidandroid;
+package com.example.itime;
 
 import org.junit.Test;
 
