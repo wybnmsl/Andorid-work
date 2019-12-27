@@ -1,4 +1,4 @@
-package com.example.itime.ui.mainColor;
+package com.example.itime.ui.maincolor;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;

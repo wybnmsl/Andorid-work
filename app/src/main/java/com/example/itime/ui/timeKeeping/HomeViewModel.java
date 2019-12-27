@@ -1,4 +1,4 @@
-package com.example.itime.ui.timeKeeping;
+package com.example.itime.ui.timekeeping;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;

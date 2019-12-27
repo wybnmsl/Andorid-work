@@ -8,6 +8,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -44,11 +45,15 @@ public class DownCountActivity extends AppCompatActivity implements DatePicker.O
     private int editPosition;
     private List<SelectButton> selectButtons = new ArrayList<>();
     private ListView listView;
+    private ListView listView1;
+
+    private ButtonAdapter adapter;
+    private Intent intent;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_add_new);
+        setContentView(R.layout.activity_down_count);
         toolbar = findViewById(R.id.toolbar);
         editText_biaoti = findViewById(R.id.editText_biaoti);
         editText_beizhu = findViewById(R.id.editText_beizhu);
@@ -74,12 +79,11 @@ public class DownCountActivity extends AppCompatActivity implements DatePicker.O
             tvDate.setText(ddl);
         }
 
-        selectButtons.add(new SelectButton("日期","长按使用日期计算器",R.drawable.icon_date));
-        selectButtons.add(new SelectButton("重复设置","无",R.drawable.icon_replay));
-        selectButtons.add(new SelectButton("图片"," ",R.drawable.icon_image));
-        selectButtons.add(new SelectButton("添加标签"," ",R.drawable.icon_bookmark));
+        selectButtons.add(new SelectButton("日期","长按使用日期计算器",R.drawable.ic_date));
+        selectButtons.add(new SelectButton("重复设置","",R.drawable.ic_replay));
+        selectButtons.add(new SelectButton("添加标签"," ",R.drawable.ic_bookmark));
 
-        ButtonAdapter adapter = new ButtonAdapter(DownCountActivity.this, R.layout.select_button, selectButtons);
+        adapter = new ButtonAdapter(DownCountActivity.this, R.layout.select_button, selectButtons);
         ((ListView) findViewById(R.id.listView_button)).setAdapter(adapter);
 
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -146,14 +150,55 @@ public class DownCountActivity extends AppCompatActivity implements DatePicker.O
                         //初始化日期监听事件
                         datePicker.init(year, month - 1, day, DownCountActivity.this);
                         break;
+                    case 1:{
+                        AlertDialog.Builder dialog1 = new AlertDialog.Builder(DownCountActivity.this);
+                        final AlertDialog dialog_zhouqi = dialog1.create();
+                        View view1=View.inflate(DownCountActivity.this,R.layout.item_aler, null);
+                        listView1 = (ListView)view1.findViewById(R.id.list_alter);
+                        final String[] M = {"每年","每月","每周","每天","自定义"};
+                        final ArrayAdapter<String> repeatadapter = new ArrayAdapter<String>(DownCountActivity.this,android.R.layout.simple_list_item_1,M);
+                        listView1.setAdapter(repeatadapter);
+                        listView1.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                            @Override
+                            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                                selectButtons.set(1, new SelectButton("重复设置",M[position],R.drawable.ic_replay));
+                                Log.d("what", M[position]);
+                                adapter.notifyDataSetChanged();
+                                dialog_zhouqi.dismiss();
+                            }
+                        });
+                        dialog_zhouqi.setView(view1);
+                        dialog_zhouqi.show();
+                        break;
+                    }
+                    case 2:{
+                        AlertDialog.Builder dialog1 = new AlertDialog.Builder(DownCountActivity.this);
+                        final AlertDialog dialog_zhouqi = dialog1.create();
+                        View view1=View.inflate(DownCountActivity.this,R.layout.item_aler, null);
+                        listView1 = (ListView)view1.findViewById(R.id.list_alter);
+                        final String[] M = {"学习","考试","生日","纪念日","自定义"};
+                        final ArrayAdapter<String>  tagadapter = new ArrayAdapter<String>(DownCountActivity.this,android.R.layout.simple_list_item_1,M);
+                        listView1.setAdapter(tagadapter);
+                        listView1.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                            @Override
+                            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                                selectButtons.set(2, new SelectButton("添加标签",M[position],R.drawable.ic_bookmark));
+                                Log.d("what", M[position]);
+                                adapter.notifyDataSetChanged();
+                                dialog_zhouqi.dismiss();
+                            }
+                        });
+                        dialog_zhouqi.setView(view1);
+                        dialog_zhouqi.show();
+                        break;
+                    }
                 }
+
             }
         });
 
 
     }
-
-
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -194,19 +239,19 @@ public class DownCountActivity extends AppCompatActivity implements DatePicker.O
         String str = "";
         String judge_biaoti = editText_biaoti.getText().toString().trim();
         String judge_beizhu = editText_beizhu.getText().toString().trim();
-        String riQi=date.toString().trim();
+        String riQi=date.toString().trim()+time.toString().trim();
+
         switch (item.getItemId()) {
             case android.R.id.home:
-                Intent intent0 = new Intent(DownCountActivity.this, MainActivity.class);
-                startActivity(intent0);
-                //finish();
+                intent = new Intent();
+                setResult(233, intent);
+                finish();
                 break;
             case R.id.item1:
-
                 if (judge_biaoti.length() == 0) {
                     Toast.makeText(DownCountActivity.this, "标题不能为空", Toast.LENGTH_LONG).show();
                 } else {
-                    Intent intent = new Intent(this,MainActivity.class);
+                    intent = new Intent(this,MainActivity.class);
                     intent.putExtra("biaoti", editText_biaoti.getText().toString());
                     intent.putExtra("riqi",riQi);
                     intent.putExtra("editPosition",editPosition);

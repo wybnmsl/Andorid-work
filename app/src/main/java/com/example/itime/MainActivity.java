@@ -2,6 +2,8 @@ package com.example.itime;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.drawable.BitmapDrawable;
+import android.os.Build;
 import android.os.Bundle;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -12,6 +14,8 @@ import android.view.View;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
+import androidx.core.content.ContextCompat;
 import androidx.core.view.GravityCompat;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
@@ -39,6 +43,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
+import java.util.Objects;
 import java.util.Random;
 
 public class MainActivity extends AppCompatActivity {
@@ -48,15 +53,18 @@ public class MainActivity extends AppCompatActivity {
     private AppBarConfiguration mAppBarConfiguration;
     private FloatingActionButton fab;
     private ListView listViewTime;
-    private TextView textViewDays,textViewJudge;//显示还剩多少天
+    private TextView textViewDays,textViewJudge;
     private List<Time> listTime=new ArrayList<>();
     private TimeAdapter timeAdapter;
     private  Toolbar toolbar;
-    private  timeSaver time_saver;
+    private SaveTime time_saver;
     private String title,ddl,days;
     private int editPosition;
     private long day_left;
     private long timeMillis_now,timeMillis_set;
+    private static final int COLOR= 200;
+    private static final int COLORBK = 201;
+    private int color;
 
 
 
@@ -88,7 +96,8 @@ public class MainActivity extends AppCompatActivity {
                         drawer.closeDrawer(GravityCompat.START);
                         break;
                     case R.id.nav_zhutise:
-                        Toast.makeText(MainActivity.this,"待补充",Toast.LENGTH_SHORT).show();
+                        Intent intent = new Intent(MainActivity.this, ColorActivity.class);
+                        startActivityForResult(intent, COLOR);
                         break;
                 }
                 return false;
@@ -111,10 +120,8 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent=new Intent();
-                intent.setClass(MainActivity.this, AddNewActivity.class);
-
+                intent.setClass(MainActivity.this, DownCountActivity.class);
                 startActivityForResult(intent,REQUEST_CODE_ADD);
-
             }
         });
         listViewTime.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -124,14 +131,14 @@ public class MainActivity extends AppCompatActivity {
                                     int position, long id) {
                 editPosition=position;
                 Time item=(Time) timeAdapter.getItem(position);
-                Intent intent = new Intent(MainActivity.this,ContentActivity.class);
+                Intent intent = new Intent(MainActivity.this, DetailActivity.class);
                 Bundle bundle = new Bundle();
                 bundle.putString("title",item.getTitle());
                 bundle.putString("ddl",item.getDdl());
                 bundle.putInt("photoId",item.getCoverResourceId());
-                bundle.putInt("position",position);
+                bundle.putInt("position",editPosition);
                 intent.putExtras(bundle);
-                startActivityForResult(intent,0);//进入详情界面
+                startActivityForResult(intent,0);
 
 
 
@@ -140,63 +147,57 @@ public class MainActivity extends AppCompatActivity {
 
         });
 
-        //处理删除事件
-        int info=getIntent().getIntExtra("info", 1);
-        if(info==0){
-            editPosition=getIntent().getIntExtra("editPosition",0);
-            listTime.remove(editPosition);
-            timeAdapter.notifyDataSetChanged();
-            Toast.makeText(MainActivity.this, "删除成功！", Toast.LENGTH_SHORT).show();
-        }
+
     }
+    @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-
-
         switch (requestCode){
-            case REQUEST_CODE_ADD:
-                String biaoti=data.getStringExtra("biaoti");
-                String riqi=data.getStringExtra("riqi");
-                if(resultCode==1){
+            case REQUEST_CODE_ADD: {
+                if (resultCode == 1) {
+                    String biaoti = data.getStringExtra("biaoti");
+                    String riqi = data.getStringExtra("riqi");
+                    if (resultCode == 1) {
 
-                    //随机生成封面图片
-                    Random r = new Random();
+                        //随机生成封面图片
+                        Random r = new Random();
 
-                    int num = (int) (Math.random() * 8 + 1);
-                    switch(num){
-                        case 1:
-                            listTime.add(new Time(biaoti,riqi,R.drawable.imagine_view_cover2));
-                            break;
-                        case 2:
-                            listTime.add(new Time(biaoti,riqi,R.drawable.imagine_view_cover3));
-                            break;
-                        case 3:
-                            listTime.add(new Time(biaoti,riqi,R.drawable.imagine_view_cover4));
-                            break;
-                        case 4:
-                            listTime.add(new Time(biaoti,riqi,R.drawable.imagine_view_cover5));
-                            break;
-                        case 5:
-                            listTime.add(new Time(biaoti,riqi,R.drawable.imagine_view_cover6));
-                            break;
-                        case 6:
-                            listTime.add(new Time(biaoti,riqi,R.drawable.imagine_view_cover7));
-                            break;
-                        case 7:
-                            listTime.add(new Time(biaoti,riqi,R.drawable.imagine_view_cover8));
-                            break;
-                        case 8:
-                            listTime.add(new Time(biaoti,riqi,R.drawable.imagine_view_cover9));
-                            break;
+                        int num = (int) (Math.random() * 8 + 1);
+                        switch (num) {
+                            case 1:
+                                listTime.add(new Time(biaoti, riqi, R.drawable.imagine2));
+                                break;
+                            case 2:
+                                listTime.add(new Time(biaoti, riqi, R.drawable.imagine3));
+                                break;
+                            case 3:
+                                listTime.add(new Time(biaoti, riqi, R.drawable.imagine4));
+                                break;
+                            case 4:
+                                listTime.add(new Time(biaoti, riqi, R.drawable.imagine5));
+                                break;
+                            case 5:
+                                listTime.add(new Time(biaoti, riqi, R.drawable.imagine6));
+                                break;
+                            case 6:
+                                listTime.add(new Time(biaoti, riqi, R.drawable.imagine7));
+                                break;
+                            case 7:
+                                listTime.add(new Time(biaoti, riqi, R.drawable.imagine8));
+                                break;
+                            case 8:
+                                listTime.add(new Time(biaoti, riqi, R.drawable.imagine9));
+                                break;
+                        }
+
+                        String str = "保存成功";
+                        Toast.makeText(this, str, Toast.LENGTH_SHORT).show();
+
+                        timeAdapter.notifyDataSetChanged();
+                        break;
                     }
-
-                    String str = "保存成功";
-                    Toast.makeText(this, str, Toast.LENGTH_SHORT).show();
-
-                    timeAdapter.notifyDataSetChanged();
-                    break;
                 }
+            }
             case 0:
                 if(resultCode==3){
                     String title=data.getStringExtra("title");
@@ -205,13 +206,36 @@ public class MainActivity extends AppCompatActivity {
                     Time time =listTime.get(editPosition);
                     time.setTitle(title);
                     time.setDdl(ddl);
-
                     timeAdapter.notifyDataSetChanged();
                     String str = "修改成功";
                     Toast.makeText(this, str, Toast.LENGTH_SHORT).show();
                     break;
                 }
+                if (resultCode == 10){
+                    //处理删除事件
+                        int edit = data.getIntExtra("edit",100000);
+                        if (edit == 100000){
+                            Toast.makeText(MainActivity.this, "cnm",Toast.LENGTH_SHORT).show();
+                        }else {
+                            listTime.remove(edit);
+                            timeAdapter.notifyDataSetChanged();
+                            Toast.makeText(MainActivity.this, "删除成功！", Toast.LENGTH_SHORT).show();
+                        }
+                    break;
+                }
+            case COLOR:
+                if (resultCode == COLORBK){
+                    color = data.getIntExtra("color",
+                            ContextCompat.getColor(this, R.color.colorPrimary));
+//                    Toast.makeText(MainActivity.this, "kkp",Toast.LENGTH_SHORT).show();
+                    toolbar.setBackgroundColor(color);
+                    this.getWindow().setColorMode(color);
+                }
+                break;
+            case 233:
+                Toast.makeText(this, "建议一键退学", Toast.LENGTH_SHORT).show();
         }
+        super.onActivityResult(requestCode, resultCode, data);
     }
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -233,11 +257,8 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void init(){
-        time_saver=new timeSaver(this);
+        time_saver=new SaveTime(this);
         listTime=time_saver.load();
-        if(listTime.size()==0){
-          listTime.add(new Time("my first timer","2019年12月31日",R.drawable.imagine_view_cover2));
-        }
     }
     //获取系统当前时间
 
@@ -250,6 +271,7 @@ public class MainActivity extends AppCompatActivity {
             resourceId = resource;
         }
 
+        @RequiresApi(api = Build.VERSION_CODES.KITKAT)
         @NonNull
         @Override
         //listview的数据加载
@@ -259,14 +281,19 @@ public class MainActivity extends AppCompatActivity {
             //days=days+"    天";
 
             View view = LayoutInflater.from(getContext()).inflate(resourceId, parent, false);
-            ((ImageView) view.findViewById(R.id.image_view_cover)).setImageResource(time.getCoverResourceId());
+            ImageView imageView = view.findViewById(R.id.image_view_cover);
+            BitmapDrawable bitmapDrawable = (BitmapDrawable)getResources().getDrawable(time.getCoverResourceId());
+            final StackBlurManager stackBlurManager = new StackBlurManager(bitmapDrawable.getBitmap());
+            imageView.setImageBitmap(stackBlurManager.process(70));
             ((TextView) view.findViewById(R.id.text_view_name)).setText(time.getTitle());
             ((TextView) view.findViewById(R.id.text_view_ddl)).setText(time.getDdl());
             try{
-                Calendar calendar = Calendar.getInstance();
-                timeMillis_now=calendar.getTimeInMillis();
-                calendar.setTime(new SimpleDateFormat("yyyy年MM月dd日").parse(time.getDdl()));
-                timeMillis_set=calendar.getTimeInMillis();
+                Calendar cal = Calendar.getInstance();
+                timeMillis_now=cal.getTimeInMillis();
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+                    cal.setTime(Objects.requireNonNull(new SimpleDateFormat("yyyy年MM月dd日HH时mm分").parse(time.getDdl())));
+                }
+                timeMillis_set=cal.getTimeInMillis();
                 day_left=(timeMillis_set-timeMillis_now)/(1000*24*60*60);
             }catch(ParseException e){
                 e.printStackTrace();

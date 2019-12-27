@@ -1,4 +1,4 @@
-package com.example.itime.ui.headLine;
+package com.example.itime.ui.headline;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;

@@ -6,32 +6,32 @@
     <group android:checkableBehavior="single">
         <item
             android:id="@+id/nav_jishi"
-            android:icon="@drawable/icon_timekeeping"
+            android:icon="@drawable/ic_timekeeping"
             android:title="@string/menu_jishi" />
         <item
             android:id="@+id/nav_biaoqian"
-            android:icon="@drawable/icon_headline"
+            android:icon="@drawable/ic_headline"
             android:title="@string/menu_biaoqian" />
         <item
             android:id="@+id/nav_zhutise"
-            android:icon="@drawable/icon_maincolor"
+            android:icon="@drawable/ic_maincolor"
             android:title="@string/menu_zhutise" />
 
     </group>
 
-    <item android:title="Other Function">
+    <item android:title="Communicate">
         <menu>
             <item
                 android:id="@+id/nav_shezhi"
-                android:icon="@drawable/icon_menu_manage"
+                android:icon="@drawable/ic_menu_manage"
                 android:title="@string/menu_shezhi" />
             <item
                 android:id="@+id/nav_share"
-                android:icon="@drawable/icon_menu_share"
+                android:icon="@drawable/ic_menu_share"
                 android:title="@string/menu_share" />
             <item
                 android:id="@+id/nav_send"
-                android:icon="@drawable/icon_menu_send"
+                android:icon="@drawable/ic_menu_send"
                 android:title="@string/menu_send" />
         </menu>
     </item>

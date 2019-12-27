@@ -1,4 +1,4 @@
-package com.example.itime.ui.timeKeeping;
+package com.example.itime.ui.timekeeping;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -19,7 +19,7 @@ public class HomeFragment extends Fragment {
                              ViewGroup container, Bundle savedInstanceState) {
         homeViewModel =
                 ViewModelProviders.of(this).get(HomeViewModel.class);
-        View root = inflater.inflate(R.layout.fragment_jishi, container, false);
+        View root = inflater.inflate(R.layout.fragment_timekeeping, container, false);
 
 
         return root;

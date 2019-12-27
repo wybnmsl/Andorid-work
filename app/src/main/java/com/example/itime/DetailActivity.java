@@ -1,5 +1,6 @@
 package com.example.itime;
 
+import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
@@ -11,6 +12,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
 import android.os.CountDownTimer;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Chronometer;
@@ -38,12 +40,11 @@ public class DetailActivity extends AppCompatActivity {
     private long timeMillis_now,timeMillis_set,diff;
     private ImageView imageView;
     private long day;
-    public static String dateFormatYMDofChinese = "yyyy年MM月dd日";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_content);
+        setContentView(R.layout.activity_detail);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         textView_contentCount=findViewById(R.id.textView_contentCount);
@@ -93,7 +94,7 @@ public class DetailActivity extends AppCompatActivity {
 
                 break;
             case R.id.item_delete:
-                new android.app.AlertDialog.Builder(this)
+                new AlertDialog.Builder(this)
                         .setIcon(android.R.drawable.ic_dialog_alert)
                         .setTitle("询问")
                         .setMessage("是否删除该计时？")
@@ -101,8 +102,10 @@ public class DetailActivity extends AppCompatActivity {
                             @Override
                             public void onClick(DialogInterface dialogInterface, int i) {
                                 Intent intent = new Intent(DetailActivity.this,MainActivity.class);
-                                intent.putExtra("info",0);
-                                startActivity(intent);
+                                intent.putExtra("edit",editPosition);
+                                Log.d("hhhhhhhhhhhh", String.valueOf(editPosition));
+                                setResult(10, intent);
+                                finish();
 
                             }
                         })
@@ -155,30 +158,22 @@ public class DetailActivity extends AppCompatActivity {
                 @Override
                 public void onTick(long millisUntilFinished) {
                     if (!DetailActivity.this.isFinishing()) {
-
-
-                        day = millisUntilFinished / (1000 * 24 * 60 * 60); //单位天
-
-                        long hour = (millisUntilFinished - day * (1000 * 24 * 60 * 60)) / (1000 * 60 * 60);
-                        //单位时
-                        long minute = (millisUntilFinished - day * (1000 * 24 * 60 * 60) - hour * (1000 * 60 * 60)) / (1000 * 60);
-                        //单位分
-                        long second = (millisUntilFinished - day * (1000 * 24 * 60 * 60) - hour * (1000 * 60 * 60) - minute * (1000 * 60)) / 1000;
-                        //单位秒
+                        long m = 1000 * 24 * 60 * 60 ;
+                        long n = 1000 * 60 * 60 ;
+                        long x = 1000 * 60 ;
+                        day = millisUntilFinished / m ;
+                        long hour = (millisUntilFinished - day * m ) / n ;
+                        long minute = (millisUntilFinished - day * m - hour * n) / x ;
+                        long second = (millisUntilFinished - day * m - hour * n - minute * x ) / 1000;
                         textView_contentCount.setText(day + "天" + hour + "小时" + minute + "分钟" + second + "秒");
                     }
                 }
-                /**
-                 * 倒计时结束后调用的
-                 */
                 @Override
                 public void onFinish() {
 
                 }
             };
             countDownTimer.start();
-
-
 
     }
     @Override
@@ -204,7 +199,7 @@ public class DetailActivity extends AppCompatActivity {
         try{
         Calendar calendar = Calendar.getInstance();
         timeMillis_now=calendar.getTimeInMillis();
-        calendar.setTime(new SimpleDateFormat("yyyy年MM月dd日").parse(ddl));
+        calendar.setTime(new SimpleDateFormat("yyyy年MM月dd日HH时mm分").parse(ddl));
         timeMillis_set=calendar.getTimeInMillis();
         diff=timeMillis_set-timeMillis_now;
         }catch(ParseException e){
